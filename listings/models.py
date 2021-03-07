@@ -9,6 +9,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
+    state = models.CharField(max_length=200)
     zipcode = models.CharField(max_length=200)
     description = models.TextField(blank=True) # blank=True parameter is set to make it optional rather than required!
     price = models.IntegerField()
@@ -32,5 +33,5 @@ class Listing(models.Model):
         return self.title
     
     
-    
+
     
