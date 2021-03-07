@@ -12,7 +12,7 @@ img {
 
 .navbar {
   opacity: 0.9;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 
 .social a {
