@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Listing
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from .choices import state_choices, bedrooms_choices, price_choices
+from .choices import state_choices, bedroom_choices, price_choices
 
 
 def index(request):
@@ -43,32 +43,38 @@ def listing(request, listing_id):
 def search(request):
     """"""
 
-    query_list = Listing.objects.order_by('-list_date')
+    queryset_list = Listing.objects.order_by('-list_date')
 
     # Keywords
     if 'keywords' in request.GET:
         keywords = request.GET['keywords']
         if keywords:
-            query_list = query_list.filter(description__icontains=keywords)
+            queryset_list = queryset_list.filter(description__icontains=keywords)
 
     # City
     if 'city' in request.GET:
         city = request.GET['city']
         if city:
-            query_list = query_list.filter(city__iexact=city)
+            queryset_list = queryset_list.filter(city__iexact=city)
             
     # State
     if 'state' in request.GET:
         state = request.GET['state']
         if state:
-            query_list = query_list.filter(state__iexact=state)
+            queryset_list = queryset_list.filter(state__iexact=state)
+
+    # Bedrooms
+    if 'bedrooms' in request.GET:
+        bedrooms = request.GET['bedrooms']
+        if bedrooms:
+            queryset_list = queryset_list.filter(bedrooms__lte=bedrooms)
 
 
     context = {
+        'listings': queryset_list,
         'state_choices': state_choices,
-        'bedroom_choices': bedrooms_choices,
+        'bedroom_choices': bedroom_choices,
         'price_choices': price_choices,
-        'listings': query_list,
     }
 
     return render(
