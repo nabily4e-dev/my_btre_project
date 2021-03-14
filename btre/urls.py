@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('pages.urls')), # Why path's first parameter is empty
     path('listings/', include('listings.urls')),
     path('accounts/', include('accounts.urls')),
+    path('contacts/', include('contacts.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
+from contacts.models import Contact
 
 
 def register(request):
@@ -35,11 +36,12 @@ def register(request):
                 # auth.login(request, user)
                 # messages.success(request, 'Logedin success')
                 # redirect('index')
-                
+
                 user.save()
-                messages.success(request, 'You are now registered and can log in')
+                messages.success(request,
+                                 'You are now registered and can log in')
                 return redirect('login')
-                
+
         else:
             messages.error(request, 'Password do not match')
             return redirect('register')
@@ -58,9 +60,9 @@ def login(request):
         # Login User
         username = request.POST['username']
         password = request.POST['password']
-        
+
         user = auth.authenticate(username=username, password=password)
-        
+
         if user is not None:
             auth.login(request, user)
             messages.success(request, 'You are logged in')
@@ -74,7 +76,7 @@ def login(request):
 
 def logout(request):
     """"""
-    
+
     if request.method == 'POST':
         auth.logout(request)
         messages.success(request, "You are now logged out")
@@ -84,4 +86,9 @@ def logout(request):
 def dashboard(request):
     """"""
 
-    return render(request, 'accounts/dashboard.html')
+    user_contacts = Contact.objects.order_by('-contact_date').filter(
+        user_id=request.user.id)
+
+    context = {'contacts': user_contacts}
+
+    return render(request, 'accounts/dashboard.html', context)
