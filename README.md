@@ -1,2 +1,2 @@
 # my_btre_project
-My first Django real world practice project attempt!
+The first Django real-world project attempt!
